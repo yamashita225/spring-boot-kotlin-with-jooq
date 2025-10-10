@@ -46,4 +46,7 @@ kotlin {
 
 tasks.named('test') {
 	useJUnitPlatform()
+    if(System.getenv("SPRING_PROFILE_ACTIVE") == null){
+        jvmArgs("-Dspring.profiles.active=local-test")
+    }
 }
