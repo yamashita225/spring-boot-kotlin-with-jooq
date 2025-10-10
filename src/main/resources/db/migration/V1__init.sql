@@ -1,0 +1,5 @@
+CREATE TABLE book(
+    id INTEGER NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    PRIMARY KEY(id)
+);
