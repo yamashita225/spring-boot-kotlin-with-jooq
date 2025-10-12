@@ -9,4 +9,4 @@ spring:
       enabled: true
   flyway:
     enabled: true
-    locations: classpath:db/
+    locations: classpath:db/migration
