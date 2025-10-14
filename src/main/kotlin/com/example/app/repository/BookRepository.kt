@@ -1,30 +1,31 @@
 package com.example.app.repository
 
+import com.example.jooq.generated.tables.references.BOOK
 import org.jooq.DSLContext
-import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
-import java.math.BigDecimal
 
 @Repository
 class BookRepository(
     private val dsl: DSLContext
 ) {
     fun getBooksByAuthor(): List<Book> {
-        return dsl
+        val record =  dsl
             .select(
-                DSL.field("book_id", Long::class.java),
-                DSL.field("title", String::class.java),
-                DSL.field("price", BigDecimal::class.java),
-//                DSL.field("publish_status", String::class.java),
+                BOOK.BOOK_ID,
+                BOOK.TITLE,
+                BOOK.PRICE,
+                BOOK.PUBLISH_STATUS
             )
-            .from("book")
+            .from(BOOK)
             .fetch()
+
+            return record.into(BOOK)
             .map {
                 Book(
-                    bookId = it.value1(),
-                    title = it.value2(),
-                    price = it.value3(),
-//                    publishStatus = it.value4(),
+                    bookId = it.bookId!!,
+                    title = it.title!!,
+                    price = it.price!!,
+                    publishStatus = PublishStatus.from(it.publishStatus!!),
                 )
             }
     }

@@ -10,25 +10,25 @@ import org.springframework.stereotype.Service
 class BookService(
     private val bookRepository: BookRepository,
 ) {
-    fun getBooksByAuthor(authorId: Long): List<Book> {
+    fun getBooksByAuthor(authorId: Int): List<Book> {
         return bookRepository.getBooksByAuthor()
     }
 
     fun createBook(request: BookRequest): BookResponse {
         return BookResponse(
-            bookId = 1L,
+            bookId = 1,
             title = "dummy",
             price = 1000.0,
-            authorId = 1L,
+            authorId = 1,
         )
     }
 
-    fun updateBook(bookId: Long, request: BookRequest): BookResponse {
+    fun updateBook(bookId: Int, request: BookRequest): BookResponse {
         return BookResponse(
             bookId = bookId,
             title = "dummy",
             price = 1000.0,
-            authorId = 1L,
+            authorId = 1,
         )
     }
 }
