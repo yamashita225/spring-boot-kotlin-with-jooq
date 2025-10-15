@@ -1,6 +1,6 @@
 package com.example.app.controller
 
-import com.example.app.repository.Book
+import com.example.app.domain.PublishStatus
 import com.example.app.service.BookService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.math.BigDecimal
 
 @RestController
 class BookController(
@@ -17,7 +18,7 @@ class BookController(
     }
 
     @GetMapping("/author/{authorId}/books")
-    fun getBooksByAuthor(@PathVariable authorId: Int): List<Book> {
+    fun getBooksByAuthor(@PathVariable authorId: Int): List<BookResponse> {
         return bookService.getBooksByAuthor(authorId = authorId)
     }
 
@@ -33,14 +34,14 @@ class BookController(
 
     data class BookRequest(
         val title: String,
-        val price: Double,
+        val price: BigDecimal,
         val authorId: Long,
     )
 
     data class BookResponse(
         val bookId: Int,
         val title: String,
-        val price: Double,
-        val authorId: Int,
+        val price: BigDecimal,
+        val publishStatus: PublishStatus,
     )
 }

@@ -2,7 +2,8 @@ package com.example.app.service
 
 import com.example.app.controller.BookController.BookResponse
 import com.example.app.controller.BookController.BookRequest
-import com.example.app.repository.Book
+import com.example.app.domain.Book
+import com.example.app.domain.PublishStatus
 import com.example.app.repository.BookRepository
 import org.springframework.stereotype.Service
 
@@ -10,25 +11,48 @@ import org.springframework.stereotype.Service
 class BookService(
     private val bookRepository: BookRepository,
 ) {
-    fun getBooksByAuthor(authorId: Int): List<Book> {
+    fun getBooksByAuthor(authorId: Int): List<BookResponse> {
         return bookRepository.getBooksByAuthor()
+            .map{ BookResponse(
+                bookId = it.bookId,
+                title = it.title,
+                price = it.price,
+                publishStatus = it.publishStatus,
+            )
+            }
     }
 
     fun createBook(request: BookRequest): BookResponse {
+         val book = Book(
+             bookId = 1,
+             title = "dummy",
+             price = 100.toBigDecimal(),
+             publishStatus = PublishStatus.PUBLISHED
+         )
+        bookRepository.create(book = book)
+
         return BookResponse(
-            bookId = 1,
-            title = "dummy",
-            price = 1000.0,
-            authorId = 1,
+            bookId = book.bookId,
+            title = book.title,
+            price = book.price,
+            publishStatus = book.publishStatus,
         )
     }
 
     fun updateBook(bookId: Int, request: BookRequest): BookResponse {
-        return BookResponse(
-            bookId = bookId,
+        val book = Book(
+            bookId = 1,
             title = "dummy",
-            price = 1000.0,
-            authorId = 1,
+            price = 100.toBigDecimal(),
+            publishStatus = PublishStatus.PUBLISHED
+        )
+        bookRepository.update(book = book)
+
+        return BookResponse(
+            bookId = book.bookId,
+            title = book.title,
+            price = book.price,
+            publishStatus = book.publishStatus,
         )
     }
 }
