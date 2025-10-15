@@ -18,8 +18,8 @@ class BookController(
     }
 
     @GetMapping("/author/{authorId}/books")
-    fun getBooksByAuthor(@PathVariable authorId: Int): List<BookResponse> {
-        return bookService.getBooksByAuthor(authorId = authorId)
+    fun getBooksByAuthorId(@PathVariable authorId: Int): List<BookResponse> {
+        return bookService.getBooksByAuthorId(authorId = authorId)
     }
 
     @PostMapping("/book")
@@ -35,7 +35,7 @@ class BookController(
     data class BookRequest(
         val title: String,
         val price: BigDecimal,
-        val authorId: Long,
+        val publishStatus: PublishStatus,
     )
 
     data class BookResponse(

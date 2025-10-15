@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service
 class BookService(
     private val bookRepository: BookRepository,
 ) {
-    fun getBooksByAuthor(authorId: Int): List<BookResponse> {
-        return bookRepository.getBooksByAuthor()
+    fun getBooksByAuthorId(authorId: Int): List<BookResponse> {
+        return bookRepository.getBooksByAuthorId()
             .map{ BookResponse(
                 bookId = it.bookId,
                 title = it.title,
@@ -25,34 +25,34 @@ class BookService(
     fun createBook(request: BookRequest): BookResponse {
          val book = Book(
              bookId = 1,
-             title = "dummy",
-             price = 100.toBigDecimal(),
+             title = request.title,
+             price = request.price,
              publishStatus = PublishStatus.PUBLISHED
          )
-        bookRepository.create(book = book)
+        val result = bookRepository.create(book = book)
 
         return BookResponse(
-            bookId = book.bookId,
-            title = book.title,
-            price = book.price,
-            publishStatus = book.publishStatus,
+            bookId = result.bookId,
+            title = result.title,
+            price = result.price,
+            publishStatus = result.publishStatus,
         )
     }
 
     fun updateBook(bookId: Int, request: BookRequest): BookResponse {
         val book = Book(
-            bookId = 1,
-            title = "dummy",
-            price = 100.toBigDecimal(),
-            publishStatus = PublishStatus.PUBLISHED
+            bookId = bookId,
+            title = request.title,
+            price = request.price,
+            publishStatus = request.publishStatus
         )
-        bookRepository.update(book = book)
+        val result = bookRepository.update(book = book)
 
         return BookResponse(
-            bookId = book.bookId,
-            title = book.title,
-            price = book.price,
-            publishStatus = book.publishStatus,
+            bookId = result.bookId,
+            title = result.title,
+            price = result.price,
+            publishStatus = result.publishStatus,
         )
     }
 }
