@@ -1,9 +1,11 @@
 package com.example.app.repository
 
 import com.example.app.domain.Book
+import com.example.app.domain.PublishStatus
 import com.example.jooq.generated.tables.references.BOOK
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
+import java.math.BigDecimal
 
 @Repository
 class BookRepository(
@@ -20,12 +22,11 @@ class BookRepository(
             .fetchInto(Book::class.java)
     }
 
-    fun create(book: Book): Book {
+    fun create(title: String, price: BigDecimal, publishStatus: PublishStatus): Book {
         return dsl.insertInto(BOOK)
-            .set(BOOK.BOOK_ID, book.bookId)
-            .set(BOOK.TITLE, book.title)
-            .set(BOOK.PRICE, book.price)
-            .set(BOOK.PUBLISH_STATUS, book.publishStatus.name)
+            .set(BOOK.TITLE, title)
+            .set(BOOK.PRICE, price)
+            .set(BOOK.PUBLISH_STATUS, publishStatus.name)
             .returningResult(BOOK.BOOK_ID, BOOK.TITLE, BOOK.PRICE, BOOK.PUBLISH_STATUS)
             .fetchOneInto(Book::class.java)!!
     }

@@ -11,3 +11,9 @@ https://docs.docker.com/desktop/setup/install/windows-install/
 
 以下にアクセスします
 http://localhost:8080/book/list
+
+Windowsでの動作確認
+/author
+```
+curl -X POST http://localhost:8080/author -H "Content-Type: application/json" -d "{\"name\": \"Taro Yamada\", \"birthDate\": \"1980-01-01\"}"
+```
