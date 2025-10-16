@@ -32,7 +32,6 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 	implementation 'org.springframework.boot:spring-boot-starter-jooq'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
@@ -41,6 +40,8 @@ dependencies {
     implementation 'org.jooq:jooq-meta:3.20.8'
     implementation 'org.jooq:jooq-codegen:3.20.8'
     implementation 'org.jooq:jooq-postgres-extensions:3.20.8'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
 	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 

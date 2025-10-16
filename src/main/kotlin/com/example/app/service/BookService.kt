@@ -23,13 +23,15 @@ class BookService(
     }
 
     fun createBook(request: BookRequest): BookResponse {
-         val book = Book(
-             bookId = 1,
-             title = request.title,
-             price = request.price,
-             publishStatus = PublishStatus.PUBLISHED
-         )
-        val result = bookRepository.create(book = book)
+        Book.validate(title = request.title, price = request.price)
+
+        val result = bookRepository.create(
+            title = request.title,
+            price = request.price,
+            publishStatus = PublishStatus.PUBLISHED, // 登録時はPUBLISHED固定
+        )
+
+        // TODO: authorBookテーブルに登録
 
         return BookResponse(
             bookId = result.bookId,
@@ -40,13 +42,21 @@ class BookService(
     }
 
     fun updateBook(bookId: Int, request: BookRequest): BookResponse {
-        val book = Book(
-            bookId = bookId,
-            title = request.title,
-            price = request.price,
-            publishStatus = request.publishStatus
+        // TODO: 更新対象データを取得、取得できない場合はエラー
+
+
+        val updatedBook = Book.update(
+            book = Book(
+                bookId = bookId,
+                title = request.title,
+                price = request.price,
+                publishStatus = request.publishStatus
+            ),
+            oldPublishStatus = PublishStatus.PUBLISHED,
         )
-        val result = bookRepository.update(book = book)
+        val result = bookRepository.update(book = updatedBook)
+
+        // TODO: authorBookテーブルに登録
 
         return BookResponse(
             bookId = result.bookId,

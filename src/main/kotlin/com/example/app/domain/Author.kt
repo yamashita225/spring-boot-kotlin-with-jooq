@@ -9,10 +9,11 @@ data class Author(
 ){
     companion object {
         fun validate(name: String, birthDate: LocalDate) {
-            require(name.length <= 255) { "名前は255文字以下にしてください" }
-            require(birthDate < LocalDate.now()) { "誕生日は過去の日付を設定してください" }
+            require(name.length <= 255) { "nameは255文字以下にしてください" }
+            require(birthDate < LocalDate.now()) { "birthDateは過去の日付を設定してください" }
         }
 
+        // TODO: 引数はauthorにした方がいいかも
         fun update(authorId: Int, name: String, birthDate: LocalDate): Author {
             validate(name = name, birthDate = birthDate)
             return Author(
