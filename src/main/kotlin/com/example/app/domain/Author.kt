@@ -13,7 +13,7 @@ data class Author(
             require(birthDate < LocalDate.now()) { "birthDateは過去の日付を設定してください" }
         }
 
-        // TODO: 引数はauthorにした方がいいかも
+        // 引数はauthorにした方がいい？
         fun update(authorId: Int, name: String, birthDate: LocalDate): Author {
             validate(name = name, birthDate = birthDate)
             return Author(

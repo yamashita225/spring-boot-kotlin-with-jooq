@@ -6,14 +6,28 @@ Windowsの場合
 事前にDockerをインストールしてください。
 https://docs.docker.com/desktop/setup/install/windows-install/
 
-起動方法・確認方法
-./gradlew runBoot
+
 
 以下にアクセスします
 http://localhost:8080/book/list
 
 Windowsでの動作確認
-/author
+dockerを起動
+```
+docker compose up
+```
+
+アプリケーション起動
+```
+./gradlew runBoot
+```
+
+author登録
 ```
 curl -X POST http://localhost:8080/author -H "Content-Type: application/json" -d "{\"name\": \"Taro Yamada\", \"birthDate\": \"1980-01-01\"}"
+```
+
+author更新
+```
+curl -X POST http://localhost:8080/author/1 -H "Content-Type: application/json" -d "{\"name\": \"Jiro Yamada\", \"birthDate\": \"1980-01-02\"}"
 ```
