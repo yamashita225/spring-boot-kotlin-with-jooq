@@ -13,9 +13,8 @@ import java.util.function.Supplier
 class TestContainersConfiguration {
     @Bean
     @ServiceConnection
-    fun postgres(): PostgreSQLContainer<*> {
-        return PostgreSQLContainer<Nothing>(DockerImageName.parse("postgres:17.6-alpine"))
-    }
+    fun postgres(): PostgreSQLContainer<*> =
+        PostgreSQLContainer<Nothing>(DockerImageName.parse("postgres:17.6-alpine"))
 
     @DynamicPropertySource
     fun properties(registry: DynamicPropertyRegistry) {

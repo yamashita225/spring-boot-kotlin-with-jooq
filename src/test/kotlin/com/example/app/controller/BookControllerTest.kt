@@ -21,10 +21,12 @@ class BookControllerTest {
     @Test
     fun test() {
         // Arrange, Act, Assert
-        val response = mockMvc
-            .perform(get("/author/1/books"))
-            .andExpect(status().isOk)
-            .andReturn().response
+        val response =
+            mockMvc
+                .perform(get("/author/1/books"))
+                .andExpect(status().isOk)
+                .andReturn()
+                .response
 
         val actual = response.getContentAsString(StandardCharsets.UTF_8)
 

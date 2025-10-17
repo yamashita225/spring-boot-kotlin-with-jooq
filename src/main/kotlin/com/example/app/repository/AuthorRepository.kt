@@ -10,27 +10,30 @@ import java.time.LocalDate
 class AuthorRepository(
     private val dsl: DSLContext,
 ) {
-    fun findById(authorId: Int): Author? {
-        return dsl.select(AUTHOR.AUTHOR_ID, AUTHOR.NAME, AUTHOR.BIRTH_DATE)
+    fun findById(authorId: Int): Author? =
+        dsl
+            .select(AUTHOR.AUTHOR_ID, AUTHOR.NAME, AUTHOR.BIRTH_DATE)
             .from(AUTHOR)
             .where(AUTHOR.AUTHOR_ID.eq(authorId))
             .fetchOneInto(Author::class.java)
-    }
 
-    fun create(name: String, birthDate: LocalDate): Author {
-        return dsl.insertInto(AUTHOR)
+    fun create(
+        name: String,
+        birthDate: LocalDate,
+    ): Author =
+        dsl
+            .insertInto(AUTHOR)
             .set(AUTHOR.NAME, name)
             .set(AUTHOR.BIRTH_DATE, birthDate)
             .returningResult(AUTHOR.AUTHOR_ID, AUTHOR.NAME, AUTHOR.BIRTH_DATE)
             .fetchOneInto(Author::class.java)!!
-    }
 
-    fun update(author: Author): Author {
-        return dsl.update(AUTHOR)
+    fun update(author: Author): Author =
+        dsl
+            .update(AUTHOR)
             .set(AUTHOR.NAME, author.name)
             .set(AUTHOR.BIRTH_DATE, author.birthDate)
             .where(AUTHOR.AUTHOR_ID.eq(author.authorId))
             .returningResult(AUTHOR.AUTHOR_ID, AUTHOR.NAME, AUTHOR.BIRTH_DATE)
             .fetchOneInto(Author::class.java)!!
-    }
 }

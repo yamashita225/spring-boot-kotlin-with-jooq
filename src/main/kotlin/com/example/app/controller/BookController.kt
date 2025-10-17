@@ -18,19 +18,20 @@ class BookController(
     }
 
     @GetMapping("/author/{authorId}/books")
-    fun getBooksByAuthorId(@PathVariable authorId: Int): List<BookResponse> {
-        return bookService.getBooksByAuthorId(authorId = authorId)
-    }
+    fun getBooksByAuthorId(
+        @PathVariable authorId: Int,
+    ): List<BookResponse> = bookService.getBooksByAuthorId(authorId = authorId)
 
     @PostMapping("/book")
-    fun createBook(@RequestBody request: BookRequest): BookResponse {
-        return bookService.createBook(request = request)
-    }
+    fun createBook(
+        @RequestBody request: BookRequest,
+    ): BookResponse = bookService.createBook(request = request)
 
     @PutMapping("/book/{bookId}")
-    fun updateBook(@PathVariable bookId: Int, @RequestBody request: BookRequest): BookResponse {
-        return bookService.updateBook(bookId = bookId, request = request)
-    }
+    fun updateBook(
+        @PathVariable bookId: Int,
+        @RequestBody request: BookRequest,
+    ): BookResponse = bookService.updateBook(bookId = bookId, request = request)
 
     data class BookRequest(
         val title: String,
