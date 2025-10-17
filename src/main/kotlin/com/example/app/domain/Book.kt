@@ -7,7 +7,7 @@ data class Book(
     val title: String,
     val price: BigDecimal,
     val publishStatus: PublishStatus,
-){
+) {
     companion object {
         fun validate(
             title: String,
@@ -17,10 +17,15 @@ data class Book(
             require(price >= BigDecimal.ZERO) { "priceは0以上にしてください" }
         }
 
-        fun update(book: Book, oldPublishStatus: PublishStatus): Book{
+        fun update(
+            book: Book,
+            oldPublishStatus: PublishStatus,
+        ): Book {
             validate(title = book.title, price = book.price)
-            if(oldPublishStatus == PublishStatus.PUBLISHED){
-                require(book.publishStatus == PublishStatus.PUBLISHED) { "publishStatusは出版済みから未出版に変更できません" }
+            if (oldPublishStatus == PublishStatus.PUBLISHED) {
+                require(
+                    book.publishStatus == PublishStatus.PUBLISHED,
+                ) { "publishStatusは出版済みから未出版に変更できません" }
             }
             return book
         }
@@ -29,14 +34,12 @@ data class Book(
 
 enum class PublishStatus {
     UNPUBLISHED,
-    PUBLISHED;
+    PUBLISHED,
+    ;
 
     companion object {
-        fun from(value: String): PublishStatus {
-            return entries.firstOrNull { it.name == value }
+        fun from(value: String): PublishStatus =
+            entries.firstOrNull { it.name == value }
                 ?: throw IllegalArgumentException("Invalid PublishStatus: $value")
-        }
     }
 }
-
-

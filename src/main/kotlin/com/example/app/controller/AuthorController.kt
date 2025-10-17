@@ -9,26 +9,27 @@ import java.time.LocalDate
 
 @RestController
 class AuthorController(
-    private val authorService: AuthorService
+    private val authorService: AuthorService,
 ) {
     @PostMapping("/author")
-    fun createAuthor(@RequestBody request: AuthorRequest): AuthorResponse {
-        return authorService.createAuthor(request = request)
-    }
+    fun createAuthor(
+        @RequestBody request: AuthorRequest,
+    ): AuthorResponse = authorService.createAuthor(request = request)
 
     @PostMapping("/author/{authorId}")
-    fun createAuthor(@PathVariable authorId: Int, @RequestBody request: AuthorRequest): AuthorResponse {
-        return authorService.updateAuthor(authorId = authorId, request = request)
-    }
+    fun createAuthor(
+        @PathVariable authorId: Int,
+        @RequestBody request: AuthorRequest,
+    ): AuthorResponse = authorService.updateAuthor(authorId = authorId, request = request)
 
     data class AuthorRequest(
         val name: String,
-        val birthDate: LocalDate
+        val birthDate: LocalDate,
     )
 
     data class AuthorResponse(
         val authorId: Int,
         val name: String,
-        val birthDate: LocalDate
+        val birthDate: LocalDate,
     )
 }
