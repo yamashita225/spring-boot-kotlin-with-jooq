@@ -17,6 +17,13 @@ class AuthorRepository(
             .where(AUTHOR.AUTHOR_ID.eq(authorId))
             .fetchOneInto(Author::class.java)
 
+    fun findByIds(authorIds: List<Int>): List<Author> =
+        dsl
+            .select(AUTHOR.AUTHOR_ID, AUTHOR.NAME, AUTHOR.BIRTH_DATE)
+            .from(AUTHOR)
+            .where(AUTHOR.AUTHOR_ID.`in`(authorIds))
+            .fetchInto(Author::class.java)
+
     fun create(
         name: String,
         birthDate: LocalDate,

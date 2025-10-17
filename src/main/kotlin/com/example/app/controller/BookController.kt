@@ -37,6 +37,7 @@ class BookController(
         val title: String,
         val price: BigDecimal,
         val publishStatus: PublishStatus,
+        val authorIds: List<Int>,
     )
 
     data class BookResponse(
@@ -44,5 +45,6 @@ class BookController(
         val title: String,
         val price: BigDecimal,
         val publishStatus: PublishStatus,
+        val authorIds: List<Int>,
     )
 }
