@@ -13,10 +13,6 @@ class AuthorService(
     private val authorRepository: AuthorRepository,
 ) {
     fun createAuthor(request: AuthorRequest): AuthorResponse {
-        Author.validate(
-            name = request.name,
-            birthDate = request.birthDate,
-        )
         val result = authorRepository.create(name = request.name, birthDate = request.birthDate)
 
         return AuthorResponse(
