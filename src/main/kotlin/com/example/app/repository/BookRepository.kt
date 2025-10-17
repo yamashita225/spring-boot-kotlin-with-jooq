@@ -11,7 +11,18 @@ import java.math.BigDecimal
 class BookRepository(
     private val dsl: DSLContext,
 ) {
-    fun getBooksByAuthorId(): List<Book> =
+    fun findById(bookId: Int): Book? =
+        dsl
+            .select(
+                BOOK.BOOK_ID,
+                BOOK.TITLE,
+                BOOK.PRICE,
+                BOOK.PUBLISH_STATUS,
+            ).from(BOOK)
+            .where(BOOK.BOOK_ID.eq(bookId))
+            .fetchOneInto(Book::class.java)
+
+    fun findByAuthorId(): List<Book> =
         dsl
             .select(
                 BOOK.BOOK_ID,
