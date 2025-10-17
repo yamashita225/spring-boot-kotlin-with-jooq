@@ -52,7 +52,6 @@ class AuthorControllerTest {
             }
             """.trimIndent()
 
-        val result =
             mockMvc
                 .put("/author/1") {
                     contentType = MediaType.APPLICATION_JSON
@@ -62,9 +61,44 @@ class AuthorControllerTest {
                     content { contentType(MediaType.APPLICATION_JSON) }
                     jsonPath("$.authorId") { value(1) }
                     jsonPath("$.name") { value("夏目 漱石（改訂）") }
-                }.andReturn()
+                }
+    }
 
-        val json = result.response.contentAsString
-        println("Updated Response: $json")
+    @Test
+    fun `should return 400 when name is blank`() {
+        val requestJson =
+            """
+            {
+                "name": "",
+                "birthDate": "1892-03-01"
+            }
+            """.trimIndent()
+
+        mockMvc
+            .post("/author") {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestJson
+            }.andExpect {
+                status { isBadRequest() }
+            }
+    }
+
+    @Test
+    fun `should return 400 when birthDate is in the future`() {
+        val requestJson =
+            """
+            {
+                "name": "山田太郎",
+                "birthDate": "2100-03-01"
+            }
+            """.trimIndent()
+
+        mockMvc
+            .post("/author") {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestJson
+            }.andExpect {
+                status { isBadRequest() }
+            }
     }
 }
