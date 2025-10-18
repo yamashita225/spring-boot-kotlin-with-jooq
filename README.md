@@ -7,7 +7,7 @@ Windowsの場合
 https://docs.docker.com/desktop/setup/install/windows-install/
 
 ## テスト実行
-docker desktop を起動
+docker desktop を起動してからtestを実行
 ```
 ./gradlew test
 ```
@@ -17,6 +17,11 @@ Windowsでの動作確認
 dockerを起動
 ```
 docker compose up
+```
+
+初回起動時には以下コマンドを実行しDBを作成(flywayで作成)
+```
+./gradlew build
 ```
 
 アプリケーション起動
