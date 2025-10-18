@@ -13,12 +13,11 @@ data class Author(
             authorId: Int,
             name: String,
             birthDate: LocalDate,
-        ): Author {
-            return Author(
+        ): Author =
+            Author(
                 authorId = authorId,
                 name = name,
                 birthDate = birthDate,
             )
-        }
     }
 }

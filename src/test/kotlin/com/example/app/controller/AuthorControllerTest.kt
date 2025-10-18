@@ -52,16 +52,16 @@ class AuthorControllerTest {
             }
             """.trimIndent()
 
-            mockMvc
-                .put("/author/1") {
-                    contentType = MediaType.APPLICATION_JSON
-                    content = requestJson
-                }.andExpect {
-                    status { isOk() }
-                    content { contentType(MediaType.APPLICATION_JSON) }
-                    jsonPath("$.authorId") { value(1) }
-                    jsonPath("$.name") { value("夏目 漱石（改訂）") }
-                }
+        mockMvc
+            .put("/author/1") {
+                contentType = MediaType.APPLICATION_JSON
+                content = requestJson
+            }.andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                jsonPath("$.authorId") { value(1) }
+                jsonPath("$.name") { value("夏目 漱石（改訂）") }
+            }
     }
 
     @Test
@@ -80,6 +80,7 @@ class AuthorControllerTest {
                 content = requestJson
             }.andExpect {
                 status { isBadRequest() }
+                jsonPath("$.errors[0].message") { value("名前は必須です") }
             }
     }
 
@@ -99,6 +100,7 @@ class AuthorControllerTest {
                 content = requestJson
             }.andExpect {
                 status { isBadRequest() }
+                jsonPath("$.errors[0].message") { value("生年月日は過去の日付を指定してください") }
             }
     }
 }

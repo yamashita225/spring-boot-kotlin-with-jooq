@@ -80,4 +80,92 @@ class BookControllerTest {
                 jsonPath("$.publishStatus") { value("PUBLISHED") }
             }
     }
+
+    @Test
+    fun `should return 400 when title is blank`() {
+        val invalidJson =
+            """
+            {
+                "title": "",
+                "price": 1200.0,
+                "publishStatus": "PUBLISHED",
+                "authorIds": [5]
+            }
+            """.trimIndent()
+
+        mockMvc
+            .post("/book") {
+                contentType = MediaType.APPLICATION_JSON
+                content = invalidJson
+            }.andExpect {
+                status { isBadRequest() }
+                jsonPath("$.errors[0].message") { value("タイトルは必須です") }
+            }
+    }
+
+    @Test
+    fun `should return 400 when price is minus`() {
+        val invalidJson =
+            """
+            {
+                "title": "price validation test",
+                "price": -100.0,
+                "publishStatus": "PUBLISHED",
+                "authorIds": [5]
+            }
+            """.trimIndent()
+
+        mockMvc
+            .post("/book") {
+                contentType = MediaType.APPLICATION_JSON
+                content = invalidJson
+            }.andExpect {
+                status { isBadRequest() }
+                jsonPath("$.errors[0].message") { value("価格は0以上である必要があります") }
+            }
+    }
+
+    @Test
+    fun `should return 400 when publishStatus is invalid`() {
+        val invalidJson =
+            """
+            {
+                "title": "publishStatus validation test",
+                "price": 1200.0,
+                "publishStatus": "INVALID",
+                "authorIds": [5]
+            }
+            """.trimIndent()
+
+        mockMvc
+            .post("/book") {
+                contentType = MediaType.APPLICATION_JSON
+                content = invalidJson
+            }.andExpect {
+                status { isBadRequest() }
+                jsonPath("$.errors[0].message") { value("指定された値が不正です: INVALID") }
+            }
+    }
+
+    @Test
+    fun `should return 400 when authorId size is zero`() {
+        val invalidJson =
+            """
+            {
+                "title": "authorIds validation test",
+                "price": 1200.0,
+                "publishStatus": "PUBLISHED",
+                "authorIds": []
+            }
+            """.trimIndent()
+
+        mockMvc
+            .post("/book") {
+                contentType = MediaType.APPLICATION_JSON
+                content = invalidJson
+            }.andExpect {
+                status { isBadRequest() }
+                jsonPath("$.errors[0].message") { value("著者Idは1件以上必要です") }
+            }
+    }
 }
