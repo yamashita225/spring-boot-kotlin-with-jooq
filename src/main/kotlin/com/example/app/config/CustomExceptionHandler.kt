@@ -20,10 +20,12 @@ class CustomExceptionHandler {
 
     // enumのバリデーションエラー時のhandler
     @ExceptionHandler(com.fasterxml.jackson.databind.exc.InvalidFormatException::class)
-    fun handleInvalidFormatException(ex: com.fasterxml.jackson.databind.exc.InvalidFormatException): ResponseEntity<Map<String, Any>> {
+    fun handleInvalidFormatException(
+        ex: com.fasterxml.jackson.databind.exc.InvalidFormatException,
+    ): ResponseEntity<Map<String, Any>> {
         val errors = listOf(mapOf("message" to "指定された値が不正です: ${ex.value}"))
         return ResponseEntity.badRequest().body(
-            mapOf("errors" to errors)
+            mapOf("errors" to errors),
         )
     }
 }
