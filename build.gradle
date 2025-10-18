@@ -120,11 +120,18 @@ tasks.named('test') {
     }
 }
 
-//tasks.named("compileKotlin") {
-//    dependsOn(tasks.named("jooqCodegen"))
-//}
+tasks.named("compileKotlin") {
+    dependsOn(tasks.named("jooqCodegen"))
+}
 
-//tasks.named("jooqCodegen") {
-//    dependsOn(tasks.named("flywayMigrate"))
-//    inputs.files(fileTree("${projectDir}/src/main/resources/db/migration"))
-//}
+tasks.named("runKtlintCheckOverMainSourceSet") {
+    dependsOn("jooqCodegen")
+}
+tasks.named("runKtlintFormatOverMainSourceSet") {
+    dependsOn("jooqCodegen")
+}
+
+tasks.named("jooqCodegen") {
+    dependsOn(tasks.named("flywayMigrate"))
+    inputs.files(fileTree("${projectDir}/src/main/resources/db/migration"))
+}
