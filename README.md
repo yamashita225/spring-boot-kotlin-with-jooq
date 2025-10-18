@@ -6,11 +6,13 @@ Windowsの場合
 事前にDockerをインストールしてください。
 https://docs.docker.com/desktop/setup/install/windows-install/
 
+## テスト実行
+docker desktop を起動
+```
+./gradlew test
+```
 
-
-以下にアクセスします
-http://localhost:8080/book/list
-
+## 動作確認方法
 Windowsでの動作確認
 dockerを起動
 ```

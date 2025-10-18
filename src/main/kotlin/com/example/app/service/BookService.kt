@@ -35,8 +35,6 @@ class BookService(
 
     @Transactional
     fun createBook(request: BookRequest): BookResponse {
-        Book.validate(title = request.title, price = request.price)
-
         isAuthorRegistered(authorIds = request.authorIds)
 
         val bookResult =

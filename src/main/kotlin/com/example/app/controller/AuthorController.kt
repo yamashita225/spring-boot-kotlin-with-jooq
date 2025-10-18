@@ -31,7 +31,6 @@ class AuthorController(
         @field:NotBlank(message = "名前は必須です")
         @field:Size(max = 255, message = "名前は255文字以下で入力してください")
         val name: String,
-
         @field:Past(message = "生年月日は過去の日付を指定してください")
         val birthDate: LocalDate,
     )

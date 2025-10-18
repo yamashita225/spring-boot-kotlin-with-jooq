@@ -22,16 +22,6 @@ class BookRepository(
             .where(BOOK.BOOK_ID.eq(bookId))
             .fetchOneInto(Book::class.java)
 
-    fun findByAuthorId(): List<Book> =
-        dsl
-            .select(
-                BOOK.BOOK_ID,
-                BOOK.TITLE,
-                BOOK.PRICE,
-                BOOK.PUBLISH_STATUS,
-            ).from(BOOK)
-            .fetchInto(Book::class.java)
-
     fun create(
         title: String,
         price: BigDecimal,

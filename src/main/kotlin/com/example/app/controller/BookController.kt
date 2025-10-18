@@ -2,6 +2,7 @@ package com.example.app.controller
 
 import com.example.app.domain.PublishStatus
 import com.example.app.service.BookService
+import jakarta.validation.Valid
 import jakarta.validation.constraints.DecimalMin
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -27,13 +28,13 @@ class BookController(
 
     @PostMapping("/book")
     fun createBook(
-        @RequestBody request: BookRequest,
+        @Valid @RequestBody request: BookRequest,
     ): BookResponse = bookService.createBook(request = request)
 
     @PutMapping("/book/{bookId}")
     fun updateBook(
         @PathVariable bookId: Int,
-        @RequestBody request: BookRequest,
+        @Valid @RequestBody request: BookRequest,
     ): BookResponse = bookService.updateBook(bookId = bookId, request = request)
 
     data class BookRequest(
@@ -42,7 +43,6 @@ class BookController(
         val title: String,
         @field:DecimalMin("0.0", inclusive = true, message = "価格は0以上である必要があります")
         val price: BigDecimal,
-        @field:NotBlank(message = "出版状況は必須です")
         val publishStatus: PublishStatus,
         @field:Size(min = 1, message = "著者Idは1件以上必要です")
         val authorIds: List<Int>,
