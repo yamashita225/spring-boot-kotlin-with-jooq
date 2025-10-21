@@ -36,7 +36,7 @@ curl -X POST "http://localhost:8080/author" -H "Content-Type: application/json" 
 
 author更新
 ```
-curl -X POST "http://localhost:8080/author/1" -H "Content-Type: application/json" -d "{\"name\": \"Jiro Yamada\", \"birthDate\": \"1980-01-02\"}"
+curl -X PUT "http://localhost:8080/author/1" -H "Content-Type: application/json" -d "{\"name\": \"Jiro Yamada\", \"birthDate\": \"1980-01-02\"}"
 ```
 
 book取得

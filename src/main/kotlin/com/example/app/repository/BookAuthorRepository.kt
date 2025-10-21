@@ -12,24 +12,15 @@ class BookAuthorRepository(
     fun create(
         bookId: Int,
         authorIds: List<Int>,
-    ): List<BookAuthor> {
-        val result =
-            dsl
-                .insertInto(BOOK_AUTHOR, BOOK_AUTHOR.BOOK_ID, BOOK_AUTHOR.AUTHOR_ID)
-                .apply {
-                    authorIds.forEach { authorId ->
-                        values(bookId, authorId)
-                    }
-                }.returningResult(BOOK_AUTHOR.BOOK_ID, BOOK_AUTHOR.AUTHOR_ID)
-                .fetch()
-
-        return result.map { record ->
-            BookAuthor(
-                bookId = record[BOOK_AUTHOR.BOOK_ID]!!,
-                authorId = record[BOOK_AUTHOR.AUTHOR_ID]!!,
-            )
-        }
-    }
+    ): List<BookAuthor> =
+        dsl
+            .insertInto(BOOK_AUTHOR, BOOK_AUTHOR.BOOK_ID, BOOK_AUTHOR.AUTHOR_ID)
+            .apply {
+                authorIds.forEach { authorId ->
+                    values(bookId, authorId)
+                }
+            }.returningResult(BOOK_AUTHOR.BOOK_ID, BOOK_AUTHOR.AUTHOR_ID)
+            .fetchInto(BookAuthor::class.java)
 
     fun delete(bookId: Int): Int =
         dsl
