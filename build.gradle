@@ -1,0 +1,137 @@
+buildscript {
+    dependencies {
+        classpath("org.testcontainers:jdbc:1.20.6")
+        classpath("org.testcontainers:postgresql:1.20.6")
+        classpath("org.flywaydb:flyway-database-postgresql:11.7.2")
+    }
+}
+
+
+plugins {
+	id 'org.jetbrains.kotlin.jvm' version '1.9.25'
+	id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
+	id 'org.springframework.boot' version '3.5.6'
+	id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.jooq.jooq-codegen-gradle' version '3.20.8'
+    id 'org.flywaydb.flyway' version '11.7.2'
+    id 'org.jlleitschuh.gradle.ktlint' version '13.1.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo project for Spring Boot'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
+	implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'org.jooq:jooq:3.20.8'
+    implementation 'org.jooq:jooq-meta:3.20.8'
+    implementation 'org.jooq:jooq-codegen:3.20.8'
+    implementation 'org.jooq:jooq-postgres-extensions:3.20.8'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
+	runtimeOnly 'org.postgresql:postgresql'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+	testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
+    testImplementation 'org.testcontainers:postgresql:1.20.6'
+
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    jooqCodegen 'org.postgresql:postgresql:42.7.3'
+}
+
+kotlin {
+	compilerOptions {
+		freeCompilerArgs.addAll '-Xjsr305=strict'
+	}
+}
+
+jooq {
+    configuration {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc {
+            driver = "org.postgresql.Driver"
+            url = "jdbc:postgresql://localhost:5432/db"
+            user = "user"
+            password = "password"
+        }
+        generator {
+            name = "org.jooq.codegen.KotlinGenerator" // Kotlin 用
+            database {
+                name = "org.jooq.meta.postgres.PostgresDatabase"
+                inputSchema = "public"
+                includes = ".*"
+                excludes = "flyway_schema_history"
+            }
+            target {
+                packageName = "${project.group}.jooq.generated"
+            }
+        }
+    }
+}
+
+sourceSets.main {
+    java.srcDirs("build/generated-sources/jooq")
+}
+
+
+
+flyway {
+    driver = "org.postgresql.Driver"
+    url = "jdbc:postgresql://localhost:5432/db"
+    user = "user"
+    password = "password"
+    schemas = ["public"]
+}
+
+ktlint {
+    filter {
+        exclude { element -> element.file.path.contains("generated") }
+    }
+}
+
+tasks.named("build") {
+    dependsOn("ktlintFormat")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    if(System.getenv("SPRING_PROFILE_ACTIVE") == null){
+        jvmArgs("-Dspring.profiles.active=local-test")
+    }
+}
+
+tasks.named("compileKotlin") {
+    dependsOn(tasks.named("jooqCodegen"))
+}
+
+tasks.named("runKtlintCheckOverMainSourceSet") {
+    dependsOn("jooqCodegen")
+}
+tasks.named("runKtlintFormatOverMainSourceSet") {
+    dependsOn("jooqCodegen")
+}
+
+tasks.named("jooqCodegen") {
+    dependsOn(tasks.named("flywayMigrate"))
+    inputs.files(fileTree("${projectDir}/src/main/resources/db/migration"))
+}
